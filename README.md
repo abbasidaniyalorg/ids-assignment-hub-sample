@@ -1,144 +1,123 @@
-# ids-assignment-hub-sample
+# IDS Assignment Hub Sample
 
-This is a sample repository for the IDS assignment hub. It acts as the master repository for the assignments. This can be viewed as a framework to create, release, grade and release solution to assignments for the students.
+This repository serves as a master framework for managing assignments in the IDS Assignment Hub. It provides tools to create, release, grade, and distribute solutions for assignments using the **nbgrader** tool.
 
-This uses the nbgrader tool to manage the assignments. The assignments are stored in the `source` directory. The assignments are distributed to the students using the `release` directory.
+### Key Features:
+- **Assignment Management**: Centralized handling of assignments using nbgrader.
+- **Student Repositories**: Distributes assignments to students as template repositories on GitHub Classroom.
+- **Grading System**: Supports both autograded and manually graded components.
+- **Secure Solutions**: This repository remains private to protect solutions and test cases, while student repositories are public.
 
-Student version of the notebooks are released as separate repositories and push to github as "template repositories".
+### Note: For now, we will only use nbgrader to create assignments and release the student versions. Auto-grading will be implemented as a CI pipeline in github classroom and grades will be published and managed there. We are not using any other features of nbgrader like student submissions, feedback, manual grading etc for now.
 
-Note: This repository will not be public as it contains all the solutions as well as the sample test cases. The student repositories will be public.
+## Workflow for Assignments
 
-## Flow of the assignments
+1. **Create Assignments**:
+   - Write assignment questions and solutions in the `source` directory along with other required files if any.
+   - Include public and hidden test cases for grading.
+   - Add autograded cells as needed.
 
+2. **Generate Student Notebooks**:  
+   - Run `nbgrader generate_assignment` to create student-friendly notebooks in the `release` directory.  
+   - Push these notebooks to a new GitHub repository as a **template repository** for distribution.  
+   - Release the student notebooks via GitHub Classroom by using the template repository, which includes all necessary files such as data, notebooks, and other resources.
 
-1. Create the assignments notebook in the `source` directory. This contains the questions and the solutions. Further, we also add the tests to the notebook. We can also have autograded answer cells in the notebook as well as manually graded cells.
+3. **Student Submission**:  
+   - Students clone the template repository to complete the assignments.  
+   - Public test cases provide immediate feedback during the solving process.  
+   - Instructors receive student submissions via GitHub Classroom.
 
-2. Run the `nbgrader assign` command to create the student version of the notebooks. This will create the student version of the notebooks in the `release` directory. This will be pushed to a new repository (public) in the github organization. On github classroom, we use this repository as the template repository.
+4. **Grading**:
+   - Use the autograder to evaluate submissions, including hidden test cases which runs as a github action workflow.
 
-3. The students will clone the repository and work on the assignments. They will push the changes to their repository. Students will be able to use public test-cases to check their solutions and get immediate feedback. 
+5. **Release Grades and Solutions**:
+   - Share grades and comments with students via feedback notebooks.
 
-4. Further, after submmissioin, the instructors can run the autograder to get the final score whiich wiil also execute the hidden test-cases. If any manual grading is required, the instructors can do that as well. We can also add instructor comments to the notebooks so that students can get an insidght on the solutions. 
+---
 
+## Setup Instructions
 
+1. **Clone the Repository**:
+   ```bash
+   git clone git@github.com:abbasidaniyal/ids-assignment-hub-sample.git
+   cd ids-assignment-hub-sample
+   ```
 
+2. **Create and Activate a Virtual Environment**:
+   ```bash
+   python3 -m venv env
+   source env/bin/activate
+   ```
 
-## Setup
+3. **Install Requirements**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-1. Clone the repository
+4. **Initialize nbgrader (First Time Only)**:
+   ```bash
+   nbgrader quickstart ids-assignment-hub-sample
+   ```
 
-```bash
-git clone git@github.com:abbasidaniyal/ids-assignment-hub-sample.git
-```
+5. **Create Assignments**:
+   - **Option 1: Using Jupyter Notebook UI**:
+     1. Start the Jupyter server:
+        ```bash
+        jupyter notebook
+        ```
+     2. Navigate to the **Form Grader** UI.
+     3. Create a new assignment.
 
-2. Create a virtual environment
+   - **Option 2: Using Command Line**:
+     1. Create an assignment directory and register it:
+        ```bash
+        mkdir source/"Assignment 1"
+        nbgrader db assignment add --assignment="Assignment 1"
+        ```
+     2. Create the assignment notebook:
+        ```bash
+        touch source/"Assignment 1"/Assignment1.ipynb
+        ```
+     > Note: Consider using shell scripts to automate this process.
 
-```bash
-python3 -m venv env
-source env/bin/activate
-```
+6. **Add Content**:
+   - Write questions, solutions, and test cases in the notebook.
+   - Include grading criteria and any additional files.
 
-3. Install the requirements
+7. **Release Assignments**:
+   ```bash
+   nbgrader generate_assignment --assignment="Assignment 1"
+   ```
+   The student version will be available in the `release` directory. Push it to a new repository in your GitHub organization.
 
-```bash
-pip install -r requirements.txt
-```
+8. **Collect Submissions**:
+   - Submissions are stored in the `submitted/<student_id>/<assignment_name>` directory.
 
-4. Initialize the nbgrader (only needed first time)
+9. **Grade Submissions**:
+    - **Autograding**:
+      ```bash
+      nbgrader autograde "Assignment 1"
+      ```
+    - **Manual Grading**:
+      ```bash
+      nbgrader formgrade "Assignment 1"
+      ```
 
-```bash
-nbgrader quickstart ids-assignment-hub-sample
-```
+10. **Release Feedback**:
+    ```bash
+    nbgrader release_feedback "Assignment 1"
+    ```
+    Feedback notebooks are stored in the `feedback` directory for distribution.
 
+11. **Generate Solutions**:
+    ```bash
+    nbgrader generate_solution "Assignment 1"
+    ```
+    Solution notebooks are stored in the `release` directory for sharing post-deadline.
 
-5. Create the assignment. It is easy to do from the UI
-
-- a. Start the notebook server
-```bash
-jupyter notebook
-```
-
-- b. Go to form grader in the UI of the notebook and go to formgrader
-- c. Create a new assignment using the UI
-
-OR 
-
-In order to use the command line, we can use the following commands:
-
-
-- a. Create the assignment directory and add to the database
-
-```bash
-mkdir source/Assignment\ 1
-nbgrader db assignment add --assignment='Assignment 1'
-```
-
-- b. Create the jupyternotebook for the assignment
-```bash
-touch source/Assignment\ 1/Assignment1.ipynb
-```
-Note: We can create shell scripts to automate the process of creating the assignments.
-
-
-6. Add the questions and solutions to the notebook. Add the tests as well along with scoring criteria.
-Add any other required files in the assignment directory.
-
-7. Release the assignment
-
-```bash
-nbgrader generate_assignment --assignment='Assignment 1'
-```
-
-This will create the student version of the notebook in the `release` directory. 
-
-To create a new repository in the github organization, we can use the following command:
-
-```bash
-```
-
-
-8. Collect student responses and store them in the `submitted` directory. Store them in the `submitted` directory in the format `submitted/<student_id>/<assignment_name>`.
-
-Note: inorder to add student, we can use the following command:
-```bash
-nbgrader db student add --last-name='Doe' --first-name='John' --id='jdoe'
-```
-or use the UI to add the students.
-
-9. Grade the assignment
-
-```bash
-nbgrader autograde assignment1
-```
-
-This will grade the assignment and store the grades in the `autograded` directory.
-
-10. If needed, do manual grading using nbgrader formgrade
-
-```bash
-nbgrader formgrade assignment1
-```
-
-11. Release the grades
-
-```bash
-nbgrader release_feedback assignment1
-```
-
-This will create the feedback version of the notebook in the `feedback` directory. This can be shared with the students.
-
-
-12. To create a solution version of the notebook, run the following command:
-
-```bash
-nbgrader generate_solution assignment1
-```
-
-This will create the solution version of the notebook in the `release` directory. This can be shared with the students after the deadline.
-
+---
 
 ## References
 
-- https://nbgrader.readthedocs.io/en/stable/
-- https://youtu.be/5WUm0QuJdFw
-
-
+- [nbgrader Documentation](https://nbgrader.readthedocs.io/en/stable/)
+- [Getting Started with nbgrader](https://youtu.be/5WUm0QuJdFw)

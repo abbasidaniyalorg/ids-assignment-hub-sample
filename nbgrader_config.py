@@ -330,7 +330,7 @@ c = get_config()  #noqa
 #  Default: ['*']
 # c.CourseDirectory.include = ['*']
 # c.CourseDirectory.include = ['**/data/*.csv', "**/*.ipynb"]
-c.CourseDirectory.include = ["*.ipynb", "data/*.csv"]
+c.CourseDirectory.include = ["*.ipynb", "*.csv", "*.md"]
 
 ## Maximum size of directories (in kilobytes; default: 100Mb). Upon copying
 #  directories recursively, larger files will be ignored with a warning.
