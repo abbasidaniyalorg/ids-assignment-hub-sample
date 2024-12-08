@@ -2,6 +2,9 @@
 
 This repository serves as a master framework for managing assignments in the IDS Assignment Hub. It provides tools to create, release, grade, and distribute solutions for assignments using the **nbgrader** tool.
 
+## Github Classroom
+- Assignment 1:  [GitHub Classroom Assignment Link](https://classroom.github.com/a/prXAd2nY)
+
 ### Key Features:
 - **Assignment Management**: Centralized handling of assignments using nbgrader.
 - **Student Repositories**: Distributes assignments to students as template repositories on GitHub Classroom.
