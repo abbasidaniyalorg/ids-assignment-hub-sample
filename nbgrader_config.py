@@ -1328,6 +1328,7 @@ c.CourseDirectory.include = ["*.ipynb", "*.csv", "*.md"]
 #------------------------------------------------------------------------------
 # Exchange(LoggingConfigurable) configuration
 #------------------------------------------------------------------------------
+c.Exchange.root = 'exchange'
 ## Local path for storing student assignments.  Defaults to '.' which is normally
 #  Jupyter's root_dir.
 #  Default: '.'
