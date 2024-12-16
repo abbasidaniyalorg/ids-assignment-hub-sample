@@ -26,12 +26,12 @@ This repository serves as a master framework for managing assignments in the IDS
    - Release the student notebooks via GitHub Classroom by using the template repository, which includes all necessary files such as data, notebooks, and other resources.
 
 3. **Student Submission**:  
-   - Students clone the template repository to complete the assignments.  
+   - Students clone their genarated repository to complete the assignments.  
    - Public test cases provide immediate feedback during the solving process.  
    - Instructors receive student submissions via GitHub Classroom.
 
 4. **Grading**:
-   - Use the autograder to evaluate submissions, including hidden test cases which runs as a github action workflow.
+   - Use the autograder in github ci to evaluate submissions, including hidden test cases which runs as a github action workflow.
 
 5. **Release Grades and Solutions**:
    - Share grades and comments with students via feedback notebooks.
@@ -118,7 +118,17 @@ This repository serves as a master framework for managing assignments in the IDS
     ```
     Solution notebooks are stored in the `release` directory for sharing post-deadline.
 
----
+## Implementation Details
+
+### AutoGrading
+
+We have implemented an autograder as a GitHub CI action. As soon as a student pushes their work, the pipeline is triggered.
+It executes the entire notebook and evaluates it against both public and hidden test cases. Additionally, it automatically generates execution and feedback notebooks to help students debug their work and receive detailed feedback.
+
+The feedback notebook also includes the student's score, calculated based on the points assigned to individual tasks in the assignment during its creation. Currently, all test cases and scores are public, but their visibility can be easily managed based on due dates or other criteria.
+
+Moreover, we can integrate this system with Canvas for deeper integration with our LMS platform.
+
 
 ## References
 
