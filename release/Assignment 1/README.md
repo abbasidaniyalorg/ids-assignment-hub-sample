@@ -48,10 +48,32 @@ The dataset includes the following columns:
 The dataset is located in the `data` directory under the name `data.csv`. You need to read it into a pandas dataframe.
 
 ### 2. Environment Setup
-Make sure you have the following libraries installed:
-```bash
-pip install pandas numpy matplotlib
-```
+
+To run the Jupyter notebook, you need to set up the required Python environment and install the necessary libraries. Follow these steps:
+
+1. **Install Python 3** on your system if not already installed.
+2. Set up a virtual environment and install the dependencies:
+
+   ```bash
+   python3 -m venv env
+   source env/bin/activate
+   pip install -r requirements.txt
+   ```
+
+   This will install all the necessary libraries in an isolated environment.
+
+3. **Start a Jupyter Notebook server**:
+
+   ```bash
+   jupyter notebook
+   ```
+
+**Note**: Alternatively, you can run the notebook in hosted Jupyter environments like Google Colab:
+- Upload the notebook and dataset to the hosted environment.
+- Ensure the dataset is in the same directory as the notebook.
+- After completing your work, download the notebook for submission.
+
+
 
 ### 3. Solution Approach
 Follow the steps provided in the notebook to:
@@ -66,3 +88,10 @@ Each step is provided with public test cases to verify your solution. However, t
 ### 5. Important Instructions
 - **Do not delete any of the existing cells** in the notebook. These cells are part of the structure, and modifying them can affect the integrity of the assignment.
 - Your **submission** should include the completed notebook, and it **must execute without any errors**. Make sure all code cells run successfully from top to bottom.
+
+
+### 6. Autograding
+
+- Your assignment will be graded using an automated grading system. Be sure to thoroughly test your functions and solutions within the notebook to ensure they behave as expected.
+- To review the autograding results, navigate to the **GitHub Actions** tab in the main repository.
+- Feedback and test results can be viewed directly in the associated GitHub pull request. You can also download the generated artifacts to verify and debug your results as needed.

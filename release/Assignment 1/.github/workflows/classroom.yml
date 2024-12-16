@@ -1,0 +1,46 @@
+name: Autograding Tests
+on:
+  - push
+  - workflow_dispatch
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    env:
+      ASSIGNMENT_NAME: "Assignment 1"
+      FILE_PATH: "${{ github.workspace }}/Assignment1.ipynb"
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Clone target repository
+      run: |
+        git clone https://github.com/abbasidaniyal/ids-assignment-hub-sample.git target-repo
+    
+    - name: Set up Python and virtual environment
+      run: |
+        python3 -m venv venv
+        source venv/bin/activate
+        python -m pip install --upgrade pip
+        pip install -r target-repo/requirements.txt
+
+    - name: Run autograding script
+      run: |
+        source venv/bin/activate
+        cd target-repo
+        ./ci/autograde.sh "${ASSIGNMENT_NAME}" "${FILE_PATH}"
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: execution
+        path: ./target-repo/autograded/ci_student/Assignment 1/Assignment1.ipynb
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: feedback
+        path: ./target-repo/feedback/ci_student/Assignment 1/Assignment1.html
