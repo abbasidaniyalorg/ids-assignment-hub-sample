@@ -36,13 +36,20 @@ jobs:
       run: |
         source venv/bin/activate
         cd target-repo
-        ./ci/validate.sh "${FILE_PATH}" >> $GITHUB_OUTPUT
+        validation_response=$(./ci/validate.sh "${FILE_PATH}")
+        echo "validation_response<<EOF" >> $GITHUB_OUTPUT
+        echo "$validation_response" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
 
-    - name: Validation Status
+    - name: Validation output
+      run: echo "${{ steps.validate.outputs.validation_response }}"
+
+    - name: Validation Status Comment
       uses: thollander/actions-comment-pull-request@v3
       with:
-        message: "Status: ${{join(steps.validation.outputs.*, '\n')}}"
+        message: "Status: ${{steps.validation.outputs.validation_response}}"
         comment-tag: validation-status
+        mode: recreate
 
     - name: Run autograding script
       run: |
