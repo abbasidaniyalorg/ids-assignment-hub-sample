@@ -1,16 +1,17 @@
 name: Autograding Tests
 on:
-  - push
+  - pull_request
   - workflow_dispatch
-  - repository_dispatch
 permissions:
   checks: write
   actions: read
   contents: read
+  pull-requests: write 
+
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
-    if: github.actor != 'github-classroom[bot]'
+    if: github.actor != 'github-classroom[bot]' # do not run on repo creation / PR sync
     env:
       ASSIGNMENT_NAME: "Assignment 1"
       FILE_PATH: "${{ github.workspace }}/Assignment1.ipynb"
@@ -18,7 +19,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Clone target repository
+    - name: Clone target repository (hub)
       run: |
         git clone https://github.com/abbasidaniyal/ids-assignment-hub-sample.git target-repo
     
@@ -28,6 +29,18 @@ jobs:
         source venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r target-repo/requirements.txt
+
+    - name: Run validatation script
+      id: validation
+      run: |
+        source venv/bin/activate
+        cd target-repo
+        ./ci/validate.sh "${ASSIGNMENT_NAME}" "${FILE_PATH}" >> $GITHUB_OUTPUT
+    - name: Validation Status
+      comment-tag: validation-status
+      uses: thollander/actions-comment-pull-request@v3
+      with:
+        message: 'Validation output: ${{steps.validation.outputs}}'
 
     - name: Run autograding script
       run: |
