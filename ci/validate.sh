@@ -13,6 +13,4 @@ fi
 set +e
 
 # nbgrader validate
-validation_response=$(nbgrader validate "$notebook_path")
-
-echo $validation_response
+nbgrader validate "$notebook_path"
