@@ -13,4 +13,6 @@ fi
 # echo "Validating assignment with notebook: $notebook_path"
 
 # nbgrader validate
-nbgrader validate "$notebook_path"
+validation_response=$(nbgrader validate "$notebook_path")
+
+echo $validation_response
