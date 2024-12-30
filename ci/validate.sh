@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set +e
+set -e
 
 # notebook path
 notebook_path=$1
@@ -10,7 +10,7 @@ if [ -z "$notebook_path" ]; then
     exit 1
 fi
 
-# echo "Validating assignment with notebook: $notebook_path"
+set +e
 
 # nbgrader validate
 validation_response=$(nbgrader validate "$notebook_path")

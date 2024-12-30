@@ -37,11 +37,13 @@ jobs:
         source venv/bin/activate
         cd target-repo
         ./ci/validate.sh "${FILE_PATH}" >> $GITHUB_OUTPUT
+
     - name: Validation Status
       uses: thollander/actions-comment-pull-request@v3
       with:
         message: "Status: ${{join(steps.validation.outputs.*, '\n')}}"
         comment-tag: validation-status
+
     - name: Run autograding script
       run: |
         source venv/bin/activate
